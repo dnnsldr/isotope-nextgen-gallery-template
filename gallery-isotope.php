@@ -13,35 +13,14 @@ Follow variables are useable :
 **/
 ?>
 
- <script src="<?php bloginfo('stylesheet_directory'); ?>/js/jquery.isotope.min.js" type="text/javascript"></script>
-
 <style type="text/css">
-
-/**** centre nav and put at bottom ****/
-.ngg-navigation{
-	position: absolute;
-	bottom: 3px;
-	left: 20%;
-	right: 20%;
-}
-
-#isotopegallery{
-	padding-bottom: 40px;
-}
-
+/**** center and put at bottom ****/
+.ngg-navigation{position: absolute;bottom: 3px;left: 20%;right: 20%;}
+#isotopegallery{padding-bottom: 40px;}
 /**** Isotope Filtering ****/
-
-.isotope-item {
-  z-index: 2;
-}
-
-.isotope-hidden.isotope-item {
-  pointer-events: none;
-  z-index: 1;
-}
-
+.isotope-item {z-index: 2;}
+.isotope-hidden.isotope-item {pointer-events: none;z-index: 1;}
 /**** Isotope CSS3 transitions ****/
-
 .isotope,
 .isotope .isotope-item {
   -webkit-transition-duration: 0.8s;
@@ -50,7 +29,6 @@ Follow variables are useable :
        -o-transition-duration: 0.8s;
           transition-duration: 0.8s;
 }
-
 .isotope {
   -webkit-transition-property: height, width;
      -moz-transition-property: height, width;
@@ -58,7 +36,6 @@ Follow variables are useable :
        -o-transition-property: height, width;
           transition-property: height, width;
 }
-
 .isotope .isotope-item {
   -webkit-transition-property: -webkit-transform, opacity;
      -moz-transition-property:    -moz-transform, opacity;
@@ -66,9 +43,7 @@ Follow variables are useable :
        -o-transition-property:         top, left, opacity;
           transition-property:         transform, opacity;
 }
-
 /**** disabling Isotope CSS3 transitions ****/
-
 .isotope.no-transition,
 .isotope.no-transition .isotope-item,
 .isotope .isotope-item.no-transition {
@@ -78,83 +53,71 @@ Follow variables are useable :
        -o-transition-duration: 0s;
           transition-duration: 0s;
 }
-
-.photo{
-	float:left;
-	margin:10px;
-}
-
-#filters{
-  margin-left:0;
-      -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px; /* future proofing */
-  -khtml-border-radius: 6px; /* for old Konqueror browsers */
-  border: #666666 1px solid;
- background: #e2e2e2; /* Old browsers */
-background: -moz-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e2e2e2), color-stop(50%,#dbdbdb), color-stop(51%,#d1d1d1), color-stop(100%,#fefefe)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* IE10+ */
-background: linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* W3C */
-}
-
-#filters li{
-  float:left;
-  list-style-type: none;
-  padding:5px;
-  margin:5px 8px;
-}
-
-#filters li a{
-  color:#444;
-  text-transform:uppercase;
-  font-weight:bold;
-  -webkit-text-shadow: 0px 1px 1px #fff;
-  -moz-text-shadow: 0px 1px 1px #fff;
-  -o-text-shadow: 0px 1px 1px #fff;
-  text-shadow: 0px 1px 1px #fff;
- 
-}
-
-#filters li a:hover{
-  color:#000;
-  text-decoration:none;
-}
-
+.photo {float:left;margin:10px;}
+.filters {margin: 0 0 20px 0}
+.filters li{ float:left;list-style-type: none;margin:5px;}
+.filters li a {font-size: 14px;background: #414141;padding: 3px 12px;color: #999;display: inline-block;-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;}
+.filters li a.active {color: #7aaeae;background: #000;}
 </style>
 
-  <script>
-    $(function(){
-      
-      var $container = $('#isotopegallery');
-      
-      $container.isotope({
-        itemSelector: '.photo'
-      });
-      
-      $('#filters a').click(function(){
-  var selector = $(this).attr('data-filter');
-  $container.isotope({ filter: selector });
-  return false;
-});
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+		
+		//sets the cookie. remove if not using jquery cookie
+		var artistSelector = $.cookie("selector");
+		
+		//checks to see if our cookie matches the gallery picked
+		//adds an active class. this is used when seeking a gallery
+		//from another page. remove if not using jquery cookie
+		$('.filters a').each(function(i){
+        	var filter = $(this).attr('data-filter');
+        	if (filter == artistSelector) {
+                $(this).addClass('active');
+            }
+    	});	
+    	
+    	//sets the isotope container...you need this	
+		var $container = $('#isotopegallery');
+      	
+      	//sets the div of the photos...you need this
+		$container.isotope({
+			itemSelector: '.photo'
+		});
+		
+		//starts the filtering isotope base on the cookie. remove if not using jquery cookie
+  		$container.isotope({ 
+  			filter: artistSelector
+  		});
+  		
+  		//change the filtering and add an active class. this happens on page...you need this
+  		//also sets an active class on the filter tag
+		$('.filters a').click(function(){
+			var artistSelector = '';
+  			var artistSelector = $(this).attr('data-filter');
+  			$('.filters a.active').removeClass('active');
+  			$(this).addClass('active');
+  			$container.isotope({ 
+  				filter: artistSelector 
+  			});
+  			return false;
+		});
+	//thats all folks
     });
-  </script>
+</script>
 
-    
-
-<ul id="filters" class="clearfix">
-  <li><a href="#" data-filter="*">show all</a></li>
-  <li><a href="#" data-filter=".plants">plants</a></li>
-  <li><a href="#" data-filter=".flower">flowers</a></li>
-  <li><a href="#" data-filter=".beach">beach</a></li>
-  <li><a href="#" data-filter=".landscape">landscape</a></li>
-  <li><a href="#" data-filter=".building">buildings</a></li>
-  <li><a href="#" data-filter=":not(.flower)">not flowers</a></li>
-  <li><a href="#" data-filter=":not(.beach, .building)">not beach or buildings</a></li>
+<h3 class="filterTitle span1">Filter:</h3>
+<ul class="filters span10" class="clearfix">
+  	<li><a href="#" data-filter="*">show all</a></li>
+  	<?php  
+  	//lets get all the nextgen gallery image tags. we only want the ones that have images
+  	//this will create a nice button style list of each tag that we can filter by
+  	$filtertags = get_terms('ngg_tag');
+    foreach ( $filtertags as $filtertag ) : ?> 
+  	<li><a href="#" data-filter=".<?php echo $filtertag->slug; ?>"><?php echo $filtertag->name; ?></a></li>
+  	<?php endforeach; ?>
 </ul>
 
+<div class="clearfix"></div>
 
 <?php if (!defined ('ABSPATH')) die ('No direct access allowed'); ?><?php if (!empty ($gallery)) : ?>
  
@@ -202,9 +165,11 @@ background: linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%
                         </a>
                 </div> 
        
+       
                 <?php if ( $image->hidden ) continue; ?>
                 <?php if ( $gallery->columns > 0 && ++$i % $gallery->columns == 0 ) { ?>
                         <br style="clear: both" />
+                        
                 <?php } ?>
  
         <?php endforeach; ?>
