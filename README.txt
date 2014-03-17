@@ -1,5 +1,7 @@
 This original script from cevenson (https://github.com/cevenson/isotope-nextgen-gallery-template/) has been modified:
 
+See demo at: http://dnnsldr.com/dev/diamondtats/gallery
+
 Additional jQuery has been set so that an active class on the filter links can be set. Modified so that the list of 
 filtered image tags is not hard-coded, but instead showing all the image tags while removing those that have no 
 images attached to them so new tags can be added to the list automatically.
